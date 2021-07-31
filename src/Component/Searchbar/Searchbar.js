@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import style from "./style.module.css";
 
-class SearchBar extends Component {
+class Searchbar extends Component {
   state = {
     query: "",
   };
@@ -33,6 +33,7 @@ class SearchBar extends Component {
             className={style.input}
             type="text"
             autoComplete="off"
+            // eslint-disable-next-line
             autoFocus
             placeholder="𝚂𝚎𝚊𝚛𝚌𝚑 𝚒𝚖𝚊𝚐𝚎𝚜 "
             onChange={this.handleInputChange}
@@ -45,8 +46,8 @@ class SearchBar extends Component {
   }
 }
 
-SearchBar.propTypes = {
+Searchbar.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
 
-export default SearchBar;
+export default Searchbar;

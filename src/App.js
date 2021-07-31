@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import SearchBar from "./Component/Searchbar";
 import Container from "./Component/Container";
 import ImageGallery from "./Component/ImageGallery";
-import Buttom from "./Component/Button/Button";
+import Button from "./Component/Button/Button";
 import api from "./Servise/FetchImage";
 import Modal from "./Component/Modal";
 import ImageLoader from "./Component/Loader";
@@ -11,9 +11,9 @@ import ImageLoader from "./Component/Loader";
 
 class App extends Component {
   state = {
+    page: 1,
+    query: "",
     images: [],
-    currentPage: 1,
-    searchQuery: "",
     isLoading: false,
     showModal: false,
     url: "",
@@ -21,18 +21,19 @@ class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const { quary } = this.state;
-    if (quary !== prevState.quary) {
-      this.FetchImage()
+    const { query } = this.state;
+    if (query !== prevState.query) {
+      this.fetchImages()
+        // eslint-disable-next-line
         .catch((error) => this.setState({ error }))
-        .finaly(() => this.setState({ isLoading: false }));
+        .finally(() => this.setState({ isLoading: false }));
     }
   }
 
-  fetchImage = () => {
-    const { quary, page } = this.state;
+  fetchImages = () => {
+    const { query, page } = this.state;
     this.setState({ isLoading: true });
-    return api.findImage(quary, page).then((images) => {
+    return api.findImage(query, page).then((images) => {
       this.setState((prevState) => ({
         images: [...prevState.images, ...images],
         page: prevState.page + 1,
@@ -41,9 +42,11 @@ class App extends Component {
   };
 
   handleOnButtonClick = () => {
-    this.fetchImage()
+    this.fetchImages()
       .then(() =>
+        // eslint-disable-next-line
         window.scrollTo({
+          // eslint-disable-next-line
           top: document.documentElement.scrollHeight,
           behavior: "smooth",
         })
@@ -52,7 +55,7 @@ class App extends Component {
       .finally(() => this.setState({ isLoading: false }));
   };
 
-  handleFormaData = ({ query }) => {
+  handleFormData = ({ query }) => {
     this.setState({
       page: 1,
       query,
@@ -81,8 +84,8 @@ class App extends Component {
 
   render() {
     const { images, isLoading, showModal, url, tag } = this.state;
-    const showMoreButton = isLoading && !showModal;
 
+    const showMoreBtn = isLoading && !showModal;
     return (
       <Container>
         {showModal && (
@@ -91,11 +94,12 @@ class App extends Component {
             <img src={url} alt={tag} onLoad={this.hideLoaderInModal} />
           </Modal>
         )}
-        <SearchBar onSubmit={this.handleFormaData} />
+        <SearchBar onSubmit={this.handleFormData} />
+
         <ImageGallery images={images} onClick={this.handleImageClick} />
-        {showMoreButton && images.length !== 0 && <ImageLoader />}
+        {showMoreBtn && images.length !== 0 && <ImageLoader />}
         {!isLoading && images[0] && (
-          <Buttom onClick={this.handleOnButtonClick} />
+          <Button onClick={this.handleOnButtonClick} />
         )}
       </Container>
     );

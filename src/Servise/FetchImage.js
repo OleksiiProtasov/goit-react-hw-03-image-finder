@@ -6,9 +6,9 @@ axios.defaults.baseURL = "https://pixabay.com/api/";
 const findImage = (searchQuery, currentPage) =>
   axios
     .get(
-      `?q=${searchQuery}&page=${currentPage}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=10`
+      `?q=${searchQuery}&page=${currentPage}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
     )
     .then((response) => response.data.hits);
 
-const findImages = { findImage };
-export default findImages;
+// eslint-disable-next-line
+export default { findImage };
