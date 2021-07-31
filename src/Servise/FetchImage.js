@@ -10,4 +10,5 @@ const findImage = (searchQuery, currentPage) =>
     )
     .then((response) => response.data.hits);
 
-export default { findImage };
+const findImages = { findImage };
+export default findImages;
